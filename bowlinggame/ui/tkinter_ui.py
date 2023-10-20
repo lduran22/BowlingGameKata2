@@ -2,6 +2,7 @@ from tkinter import Tk, Frame, Label, Entry, messagebox
 from tkinter.constants import TOP, X, SOLID, W, LEFT, END
 from tkinter.ttk import Button
 from customtkinter import CTk
+from tkinter import filedialog as fd
 
 from bowlinggame.model.bowling import Game
 from bowlinggame.model.bowling_errors import FramePinsExceededError
@@ -106,6 +107,9 @@ class BowlingApp(CTk):
         self.unbind("<Visibility>")
 
     def reset(self):
+        for i, frame in enumerate(self.game.frames):
+            self.frames[i].update_rolls(str(""))
+            self.frames[i].update_score("")
         pass
 
     def add_roll(self):
@@ -128,7 +132,21 @@ class BowlingApp(CTk):
             self.add_roll_entry.focus()
 
     def load_from_file(self):
-        pass
+
+        file_path = fd.askopenfilename(title="Select a file",
+                                       filetypes=[("Text files","*.txt"),("All files", ".*")])
+
+        with open(file_path, 'r')as file:
+            file_contents = file.readline()
+            file_contents = list(file_contents)
+            print(file_contents)
+            for i in file_contents:
+                if i == " ":
+                    file_contents.remove(i)
+
+            for i in range(len(file_contents)):
+                pass
+
 
     def update_frames(self):
         for i, frame in enumerate(self.game.frames):
